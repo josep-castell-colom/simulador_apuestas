@@ -2,6 +2,16 @@ public abstract class Apuesta {
     private Usuario usuario;
     private int num_apuesta;
     private static int contador = 0;
+    
+    public Apuesta(Usuario usuario) {
+        this.setUsuario(usuario);
+        this.setNum_apuesta();
+    }
+
+    public Apuesta(Apuesta apuesta) {
+        this.setUsuario(apuesta.getUsuario());
+        this.setNum_apuesta();
+    }
 
     public Usuario getUsuario() {
         return usuario;
@@ -15,23 +25,13 @@ public abstract class Apuesta {
         this.setNum_apuesta();
     }
 
-    public Apuesta(Usuario usuario) {
-        this.setUsuario(usuario);
-        this.setNum_apuesta();
-    }
-
-    public Apuesta(Apuesta apuesta) {
-        this.setUsuario(apuesta.getUsuario());
-        this.setNum_apuesta();
-    }
-
     public int getNum_apuesta() {
         return num_apuesta;
     }
 
     public void setNum_apuesta() {
-        this.num_apuesta = contador;
         contador++;
+        this.num_apuesta = contador;
     }
 
     @Override

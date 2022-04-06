@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Tools {
@@ -18,5 +19,9 @@ public class Tools {
             }
         } while (!opt.equalsIgnoreCase("s") && !opt.equalsIgnoreCase("n"));
         return confirmar;
+    }
+
+    public static boolean contains(final int[] arr, final int key){
+        return Arrays.stream(arr).anyMatch(i -> i == key);
     }
 }

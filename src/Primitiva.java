@@ -19,22 +19,12 @@ public class Primitiva extends Apuesta {
     return listaNum;
   }
 
+  public int getListaNum(int i){
+    return listaNum[i];
+  }
+
   public void setListaNum(int[] listaNum) {
-    boolean ok = true;
-    try {
-      for (int i = 0; i < 6; i++) {
-        if (listaNum[i] < 1 || listaNum[i] > 49) {
-          ok = false;
-        }
-      }
-      if (ok) {
-        this.listaNum = listaNum;
-      } else {
-        throw new MyException(2);
-      }
-    } catch (MyException e) {
-      System.out.println(e.getMessage());
-    }
+    this.listaNum = listaNum;    
   }
 
   public void setNum(int posicion, int valor) throws MyException {
@@ -52,18 +42,26 @@ public class Primitiva extends Apuesta {
   public void setListaNum() {
     for (int i = 0; i < 6; i++) {
       boolean valueOk = false;
-      System.out.println("Introduce " + (6 - i) + " números entre el 1 y el 49 (ambos incluidos)");
-      try {
-        this.setNum(i, Integer.parseInt(Tools.input.nextLine()));
-        valueOk = true;
-      } catch (MyException e) {
-        Tools.input.nextLine();
-        System.out.println(e.getMessage());
-      } catch (Exception e) {
-        System.out.println("Introduce un número!");
-      }
-      if (!valueOk) {
-        i--;
+      while(!valueOk){
+        System.out.println("Introduce " + (6 - i) + " números entre el 1 y el 49 (ambos incluidos)");
+        if(Tools.input.hasNextInt()){
+          int num = Integer.parseInt(Tools.input.nextLine());
+          if(!Tools.contains(this.getListaNum(), num)){
+            try {
+              this.setNum(i, num);
+              valueOk = true;
+            } catch (MyException e) {
+              System.out.println(e.getMessage());
+            } catch (Exception e) {
+              System.out.println("Introduce un número!");
+            }
+          }else{
+            System.out.println("Numero repetido");
+          }
+        }else{
+          Tools.input.nextLine();
+          System.out.println("Introduce un número!");
+        }
       }
     }
   }
@@ -78,7 +76,7 @@ public class Primitiva extends Apuesta {
 
   @Override
   public String toString() {
-    return "USUARIO: " + this.getUsuario() +
+    return "USUARIO: " + this.getUsuario().getNombre() +
         "\nNÚMERO DE APUESTA: " + this.getNum_apuesta() +
         "\nNÚMEROS ELEGIDOS: " + this.getListaNum()[0] + ", " + this.getListaNum()[1] + ", " + this.getListaNum()[2]
         + ", " + this.getListaNum()[3] + ", " + this.getListaNum()[4] + ", " + this.getListaNum()[5] +
@@ -90,18 +88,33 @@ public class Primitiva extends Apuesta {
     System.out.println(this);
   }
 
-  public static void creaPrimitiva() throws MyException {
+  public static void creaPrimitiva(){
     boolean exit = false;
     System.out.println("NUEVA PRIMITIVA");
-    Usuario usuario = Usuario.crearUsuario();
-    while (!exit) {
-      Primitiva primitiva = new Primitiva();
-      primitiva.setListaNum();
-      usuario.getApuestas().add(primitiva);
-      primitiva.setUsuario(usuario);
-      System.out.println("Primitiva guardada\n" + primitiva);
-      System.out.println("¿Desea realizar otra Primitiva?");
-      exit = !Tools.confirmar();
+    try{
+      Usuario usuario = Usuario.crearUsuario();
+      System.out.println(usuario);
+      while (!exit) {
+        Primitiva primitiva = new Primitiva();
+        primitiva.setListaNum();
+        usuario.getPrimitivas().add(primitiva);
+        primitiva.setUsuario(usuario);
+        System.out.println("[+] Primitiva guardada\n" + primitiva);
+        System.out.println("¿Desea realizar otra Primitiva?");
+        exit = !Tools.confirmar();
+      }
+    }catch(MyException e){
+      System.out.println(e.getMessage());
+    }
+  }
+
+  public void compararPrimitiva(int[] random){
+    for(int i = 0; i < 6; i ++){
+      for(int j = 0; j < 6; j ++){
+        if(this.getListaNum(i) == random[j]){
+          this.setAciertos(this.getAciertos() + 1);
+        }
+      }
     }
   }
 }

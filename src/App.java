@@ -1,10 +1,6 @@
-import java.util.ArrayList;
-
-import exceptions.MyException;
-
 public class App {
     private static boolean on = true;
-    private static ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
+    private static Usuario currentUser;
 
     public static boolean getOn() {
         return on;
@@ -14,21 +10,15 @@ public class App {
         App.on = !on;
     }
 
-    public static ArrayList<Usuario> getUsuarios() {
-        return usuarios;
+    public static Usuario getUsuario() {
+        return currentUser;
     }
 
-    public static void setUsuarios(ArrayList<Usuario> usuarios) {
-        App.usuarios = usuarios;
+    public static void setUsuario(Usuario usuario) {
+        App.currentUser = usuario;
     }
 
     public static void main(String[] args) {
-        while (on) {
-            try {
-                Primitiva.creaPrimitiva();
-            } catch (MyException e) {
-                System.out.println(e.getMessage());
-            }
-        }
+        SimulacionLoteria.menu();
     }
 }

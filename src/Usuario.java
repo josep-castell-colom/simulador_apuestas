@@ -7,16 +7,16 @@ public class Usuario {
     private static Scanner input = new Scanner(System.in);
     private String nombre;
     private String apellidos;
-    private ArrayList<Apuesta> apuestas;
+    private ArrayList<Primitiva> primitivas;
 
     public Usuario() {
-        this.setApuestas(new ArrayList<Apuesta>());
+        this.setPrimitivas(new ArrayList<Primitiva>());
     }
 
-    public Usuario(String nombre, String apellidos, ArrayList<Apuesta> apuestas) throws MyException {
+    public Usuario(String nombre, String apellidos, ArrayList<Primitiva> primitivas) throws MyException {
         this.setNombre(nombre);
         this.setApellidos(apellidos);
-        this.setApuestas(apuestas);
+        this.setPrimitivas(primitivas);
     }
 
     public String getNombre() {
@@ -35,30 +35,27 @@ public class Usuario {
         return apellidos;
     }
 
-    public void setApellidos(String apellidos) {
-        try {
-            if (apellidos.equals(apellidos.toUpperCase())) {
-                this.apellidos = apellidos;
-            } else {
-                throw new MyException(1);
-            }
-        } catch (MyException e) {
-            System.out.println(e.getMessage());
+    public void setApellidos(String apellidos) throws MyException {
+        if (apellidos.equals(apellidos.toUpperCase())) {
+            this.apellidos = apellidos;
+        } else {
+            throw new MyException(1);
         }
     }
 
-    public ArrayList<Apuesta> getApuestas() {
-        return apuestas;
+    public ArrayList<Primitiva> getPrimitivas() {
+        return primitivas;
     }
 
-    public void setApuestas(ArrayList<Apuesta> apuestas) {
-        this.apuestas = apuestas;
+    public void setPrimitivas(ArrayList<Primitiva> primitivas) {
+        this.primitivas = primitivas;
     }
 
     @Override
     public String toString() {
         return "NOMBRE: " + this.getNombre() +
-                "\nAPELLIDOS: " + this.getApellidos();
+                "\nAPELLIDOS: " + this.getApellidos() +
+                "\nPRIMITIVAS: " + this.getPrimitivas();
     }
 
     public static Usuario crearUsuario() throws MyException {
@@ -67,7 +64,7 @@ public class Usuario {
         usuario.setNombre(input.nextLine());
         System.out.println("Introduce apellidos (en mayúsculas): ");
         usuario.setApellidos(input.nextLine());
-        App.getUsuarios().add(usuario);
+        App.setUsuario(usuario);
         return usuario;
     }
 
